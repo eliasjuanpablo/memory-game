@@ -1,5 +1,7 @@
 export enum CellStatus {
   Hidden,
+  Selected,
+  Revealed,
 }
 
 export interface ICell {
@@ -9,5 +11,5 @@ export interface ICell {
 
 export interface IGameState {
   cells: ICell[];
-  selected: number[];
+  finished: boolean;
 }
