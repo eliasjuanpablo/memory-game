@@ -1,4 +1,4 @@
-import { generateCells } from "./domain";
+import { GameManager, generateCells } from "./domain";
 import { CellStatus } from "./types";
 
 const _ = require("lodash");
@@ -19,5 +19,14 @@ describe("cells generation", () => {
     const result = generateCells();
     const statuses = result.map((c) => c.status);
     expect(statuses.every((s) => s === CellStatus.Hidden)).toBe(true);
+  });
+});
+
+describe("game manager initialization", () => {
+  it("initializes private variables properly", () => {
+    const gm = new GameManager();
+    const { cells, selected } = gm.state;
+    expect(cells).not.toBeUndefined();
+    expect(selected).not.toBeUndefined();
   });
 });
