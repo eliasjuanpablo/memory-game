@@ -1,25 +1,35 @@
-import { GameManager, generateCells } from "./domain";
-import { CellStatus } from "./types";
+import countBy from "lodash/countBy";
 
-const _ = require("lodash");
+import { GameManager } from "./domain";
+import { CellStatus } from "./types";
 
 describe("cells generation", () => {
   it("should have proper size", () => {
+    const gm = new GameManager();
     const size = 4;
-    expect(generateCells(size)).toHaveLength(size * size);
+    expect(gm["generateCells"](size)).toHaveLength(size * size);
   });
 
   it("should have values repeated twice", () => {
-    const result = generateCells();
-    const counts = _.countBy(result.map((v) => v.value));
+    const gm = new GameManager();
+    const result = gm["generateCells"]();
+    const counts = countBy(result.map((v) => v.value));
     expect(Object.values(counts).every((c) => c === 2)).toBe(true);
   });
 
-  // TODO: test it's shuffled
-  // TODO: maybe this is a private method
+  it("should be shuffled", () => {
+    // not the best check but as soon as it's not "sorted" it's ok
+    const gm = new GameManager();
+    const size = 4;
+    const result = gm["generateCells"](size);
+    expect(result.map((c) => c.value)).not.toBe([
+      0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7,
+    ]);
+  });
 
   it("should have proper initial state", () => {
-    const result = generateCells();
+    const gm = new GameManager();
+    const result = gm["generateCells"]();
     const statuses = result.map((c) => c.status);
     expect(statuses.every((s) => s === CellStatus.Hidden)).toBe(true);
   });

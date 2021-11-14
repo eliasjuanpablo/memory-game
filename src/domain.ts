@@ -1,16 +1,20 @@
+import shuffle from "lodash/shuffle";
 import { CellStatus, ICell, IGameState } from "./types";
-
-export function generateCells(size: number = 4): ICell[] {
-  const values = [...Array(size * 2).keys(), ...Array(size * 2).keys()];
-  return values.map((value) => ({ value, status: CellStatus.Hidden }));
-}
 
 export class GameManager {
   private cells: ICell[];
   private finished: boolean = false;
 
   constructor(size: number = 4) {
-    this.cells = generateCells(size);
+    this.cells = this.generateCells(size);
+  }
+
+  private generateCells(size: number = 4): ICell[] {
+    const values = shuffle([
+      ...Array(size * 2).keys(),
+      ...Array(size * 2).keys(),
+    ]);
+    return values.map((value) => ({ value, status: CellStatus.Hidden }));
   }
 
   get state(): IGameState {
