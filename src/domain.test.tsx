@@ -81,4 +81,15 @@ describe("game manager plays", () => {
     expect(cells[0].status).toEqual(CellStatus.Hidden);
     expect(cells[unmatchedIndex].status).toEqual(CellStatus.Hidden);
   });
+
+  it("handles game finish", () => {
+    const checkWinSpy = jest.spyOn(GameManager.prototype as any, "checkWin");
+    const gm = new GameManager();
+    gm["cells"] = gm["cells"].slice(0, 2).map((c) => ({ ...c, value: 0 }));
+    gm.selectCell(0);
+    gm.selectCell(1);
+    const { finished } = gm.state;
+    expect(finished).toBe(true);
+    expect(checkWinSpy).toHaveBeenCalled();
+  });
 });

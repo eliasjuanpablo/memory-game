@@ -17,6 +17,12 @@ export class GameManager {
     return values.map((value) => ({ value, status: CellStatus.Hidden }));
   }
 
+  private checkWin(): boolean {
+    const revealed = this.cells.filter((c) => c.status === CellStatus.Revealed);
+
+    return revealed.length === this.cells.length;
+  }
+
   get state(): IGameState {
     return {
       cells: this.cells,
@@ -35,12 +41,20 @@ export class GameManager {
       const alreadySelectedIndex = this.cells.findIndex(
         (c) => c.status === CellStatus.Selected
       );
+
+      let status: CellStatus;
+
       if (this.cells[index].value === this.cells[alreadySelectedIndex].value) {
-        this.cells[index].status = CellStatus.Revealed;
-        this.cells[alreadySelectedIndex].status = CellStatus.Revealed;
+        status = CellStatus.Revealed;
       } else {
-        this.cells[index].status = CellStatus.Hidden;
-        this.cells[alreadySelectedIndex].status = CellStatus.Hidden;
+        status = CellStatus.Hidden;
+      }
+
+      this.cells[index].status = status;
+      this.cells[alreadySelectedIndex].status = status;
+
+      if (this.checkWin()) {
+        this.finished = true;
       }
     }
 
