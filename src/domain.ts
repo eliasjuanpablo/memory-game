@@ -6,10 +6,14 @@ export class GameManager {
   private finished: boolean = false;
 
   constructor(size: number = 4) {
-    this.cells = this.generateCells(size);
+    this.cells = this._generateCells(size);
   }
 
-  private generateCells(size: number = 4): ICell[] {
+  private _findCellsByStatus(status: CellStatus): ICell[] {
+    return this.cells.filter((c) => c.status === status);
+  }
+
+  private _generateCells(size: number = 4): ICell[] {
     const values = shuffle([
       ...Array(size * 2).keys(),
       ...Array(size * 2).keys(),
@@ -17,8 +21,8 @@ export class GameManager {
     return values.map((value) => ({ value, status: CellStatus.Hidden }));
   }
 
-  private checkWin(): boolean {
-    const revealed = this.cells.filter((c) => c.status === CellStatus.Revealed);
+  private _checkWin(): boolean {
+    const revealed = this._findCellsByStatus(CellStatus.Revealed);
 
     return revealed.length === this.cells.length;
   }
@@ -30,8 +34,31 @@ export class GameManager {
     };
   }
 
+  checkMatch(): IGameState {
+    const selectedCells = this.cells
+      .map((c, index) => ({ ...c, index }))
+      .filter((c) => c.status === CellStatus.Selected);
+    if (selectedCells.length !== 2) return this.state; // do nothing
+
+    const [c1, c2] = selectedCells;
+    if (c1.value === c2.value) {
+      this.cells[c1.index].status = CellStatus.Revealed;
+      this.cells[c2.index].status = CellStatus.Revealed;
+    } else {
+      this.cells[c1.index].status = CellStatus.Hidden;
+      this.cells[c2.index].status = CellStatus.Hidden;
+    }
+
+    if (this._checkWin()) {
+      this.finished = true;
+    }
+
+    return this.state;
+  }
+
   selectCell(index: number): IGameState {
-    const selected = this.cells.filter((c) => c.status === CellStatus.Selected);
+    const selected = this._findCellsByStatus(CellStatus.Selected);
+
     if (selected.length === 0) {
       this.cells = this.cells.map((c, i) =>
         i === index ? { ...c, status: CellStatus.Selected } : c
@@ -45,21 +72,7 @@ export class GameManager {
         // selected an already selected cell, do nothing
         return this.state;
       }
-
-      let status: CellStatus;
-
-      if (this.cells[index].value === this.cells[alreadySelectedIndex].value) {
-        status = CellStatus.Revealed;
-      } else {
-        status = CellStatus.Hidden;
-      }
-
-      this.cells[index].status = status;
-      this.cells[alreadySelectedIndex].status = status;
-
-      if (this.checkWin()) {
-        this.finished = true;
-      }
+      this.cells[index].status = CellStatus.Selected;
     }
 
     return this.state;
