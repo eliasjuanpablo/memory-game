@@ -41,6 +41,10 @@ export class GameManager {
       const alreadySelectedIndex = this.cells.findIndex(
         (c) => c.status === CellStatus.Selected
       );
+      if (index === alreadySelectedIndex) {
+        // selected an already selected cell, do nothing
+        return this.state;
+      }
 
       let status: CellStatus;
 

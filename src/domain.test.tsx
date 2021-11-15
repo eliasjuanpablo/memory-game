@@ -69,6 +69,17 @@ describe("game manager plays", () => {
     expect(cells[matchingIndex].status).toEqual(CellStatus.Revealed);
   });
 
+  it("does nothing when matching a cell with itself", () => {
+    const gm = new GameManager();
+    const firstCell = gm["cells"][0];
+    firstCell.status = CellStatus.Selected;
+    const originalState = gm.state;
+    gm.selectCell(0);
+    const newState = gm.state;
+
+    expect(originalState).toEqual(newState);
+  });
+
   it("hides cells when different", () => {
     const gm = new GameManager();
     const firstCell = gm["cells"][0];
