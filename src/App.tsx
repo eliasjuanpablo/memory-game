@@ -1,8 +1,26 @@
-import React from "react";
+import Cell from "./components/Cell";
+import { useGameManager } from "./hooks";
 import "./App.css";
 
 function App() {
-  return <div className="App"></div>;
+  const {
+    gameState: { cells },
+    selectCell,
+  } = useGameManager();
+
+  return (
+    <div className="App">
+      {cells.map((c, index) => (
+        <Cell
+          key={index}
+          {...c}
+          onClick={() => {
+            selectCell(index);
+          }}
+        />
+      ))}
+    </div>
+  );
 }
 
 export default App;

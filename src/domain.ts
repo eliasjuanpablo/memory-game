@@ -4,9 +4,18 @@ import { CellStatus, ICell, IGameState } from "./types";
 export class GameManager {
   private cells: ICell[];
   private finished: boolean = false;
+  private static instance: GameManager;
 
   constructor(size: number = 4) {
     this.cells = this._generateCells(size);
+  }
+
+  static getInstance(): GameManager {
+    if (this.instance) {
+      return this.instance;
+    }
+    this.instance = new GameManager();
+    return this.instance;
   }
 
   private _findCellsByStatus(status: CellStatus): ICell[] {
@@ -58,6 +67,8 @@ export class GameManager {
 
   selectCell(index: number): IGameState {
     const selected = this._findCellsByStatus(CellStatus.Selected);
+
+    if (this.cells[index].status !== CellStatus.Hidden) return this.state;
 
     if (selected.length === 0) {
       this.cells = this.cells.map((c, i) =>
