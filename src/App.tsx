@@ -9,16 +9,18 @@ function App() {
   } = useGameManager();
 
   return (
-    <div className="App">
-      {cells.map((c, index) => (
-        <Cell
-          key={index}
-          {...c}
-          onClick={() => {
-            selectCell(index);
-          }}
-        />
-      ))}
+    <div className="wrapper">
+      <div className="grid">
+        {cells.map((c, index) => (
+          <Cell
+            key={index}
+            {...c}
+            onClick={() => {
+              selectCell(index);
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 }

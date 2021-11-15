@@ -1,0 +1,13 @@
+.cell {
+  background: #31485a;
+  height: 2em;
+  width: 2em;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 2em;
+
+  transition: background-color 0.5s ease;
+}
