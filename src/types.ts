@@ -12,9 +12,14 @@ export interface ICell {
 export interface IGameState {
   cells: ICell[];
   finished: boolean;
+  players: IPlayer[];
 }
 
 export interface IGameSettings {
   size?: number;
   players?: number;
+}
+
+export interface IPlayer {
+  points: number;
 }

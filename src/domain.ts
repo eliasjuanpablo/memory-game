@@ -1,14 +1,16 @@
 import shuffle from "lodash/shuffle";
-import { CellStatus, ICell, IGameSettings, IGameState } from "./types";
+import { CellStatus, ICell, IGameSettings, IGameState, IPlayer } from "./types";
 
 const DEFAULT_GRID_SIZE = 4;
 
 export class GameManager {
   private cells: ICell[];
   private finished: boolean = false;
+  private players: IPlayer[];
 
   constructor(settings: IGameSettings = {}) {
     this.cells = this._generateCells(settings.size || DEFAULT_GRID_SIZE);
+    this.players = this._generatePlayers(settings.players || 1);
   }
 
   private _findCellsByStatus(status: CellStatus): ICell[] {
@@ -23,6 +25,12 @@ export class GameManager {
     return values.map((value) => ({ value, status: CellStatus.Hidden }));
   }
 
+  private _generatePlayers(players: number): IPlayer[] {
+    return [...Array(players).keys()].map(() => ({
+      points: 0,
+    }));
+  }
+
   private _checkWin(): boolean {
     const revealed = this._findCellsByStatus(CellStatus.Revealed);
 
@@ -33,6 +41,7 @@ export class GameManager {
     return {
       cells: this.cells,
       finished: this.finished,
+      players: this.players,
     };
   }
 

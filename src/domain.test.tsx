@@ -26,7 +26,7 @@ describe("cells generation", () => {
     ]);
   });
 
-  it("should have proper initial state", () => {
+  it("should initialize cells properly", () => {
     const gm = new GameManager();
     const statuses = gm.state.cells.map((c) => c.status);
     expect(statuses.every((s) => s === CellStatus.Hidden)).toBe(true);
@@ -36,9 +36,19 @@ describe("cells generation", () => {
 describe("game manager initialization", () => {
   it("initializes private variables properly", () => {
     const gm = new GameManager();
-    const { cells, finished } = gm.state;
+    const { cells, finished, players } = gm.state;
     expect(cells).not.toBeUndefined();
     expect(finished).not.toBeUndefined();
+    expect(players).not.toBeUndefined();
+  });
+});
+
+describe("players handling", () => {
+  it("should initialize players properly", () => {
+    const gm = new GameManager({ players: 2 });
+    const { players } = gm.state;
+    expect(players.length).toBe(2);
+    expect(players.every((p) => p.points === 0)).toBe(true);
   });
 });
 
