@@ -1,5 +1,5 @@
 import shuffle from "lodash/shuffle";
-import { CellStatus, ICell, IGameState } from "./types";
+import { CellStatus, ICell, IGameSettings, IGameState } from "./types";
 
 const DEFAULT_GRID_SIZE = 4;
 
@@ -7,8 +7,8 @@ export class GameManager {
   private cells: ICell[];
   private finished: boolean = false;
 
-  constructor(size: number = DEFAULT_GRID_SIZE) {
-    this.cells = this._generateCells(size);
+  constructor(settings: IGameSettings = {}) {
+    this.cells = this._generateCells(settings.size || DEFAULT_GRID_SIZE);
   }
 
   private _findCellsByStatus(status: CellStatus): ICell[] {

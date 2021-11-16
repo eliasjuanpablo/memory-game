@@ -1,8 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { GameManager } from "./domain";
+import { IGameSettings } from "./types";
 
-export function useGameManager(size: number = 4, checkDelay: number = 2000) {
-  const gm = useRef(new GameManager(size));
+export function useGameManager(
+  settings?: IGameSettings,
+  checkDelay: number = 2000
+) {
+  const gm = useRef(new GameManager(settings));
   const [gameState, setGameState] = useState(gm.current.state);
   const [selectedIndex, setSelectedIndex] = useState<number>();
 

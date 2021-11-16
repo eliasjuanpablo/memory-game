@@ -13,3 +13,8 @@ export interface IGameState {
   cells: ICell[];
   finished: boolean;
 }
+
+export interface IGameSettings {
+  size?: number;
+  players?: number;
+}
