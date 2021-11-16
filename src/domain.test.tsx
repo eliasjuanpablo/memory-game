@@ -12,7 +12,7 @@ describe("cells generation", () => {
 
   it("should have values repeated twice", () => {
     const gm = new GameManager();
-    const result = gm["_generateCells"]();
+    const result = gm["_generateCells"](4);
     const counts = countBy(result.map((v) => v.value));
     expect(Object.values(counts).every((c) => c === 2)).toBe(true);
   });
@@ -20,8 +20,7 @@ describe("cells generation", () => {
   it("should be shuffled", () => {
     // not the best check but as soon as it's not "sorted" it's ok
     const gm = new GameManager();
-    const size = 4;
-    const result = gm["_generateCells"](size);
+    const result = gm["_generateCells"](4);
     expect(result.map((c) => c.value)).not.toBe([
       0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7,
     ]);
@@ -29,8 +28,7 @@ describe("cells generation", () => {
 
   it("should have proper initial state", () => {
     const gm = new GameManager();
-    const result = gm["_generateCells"]();
-    const statuses = result.map((c) => c.status);
+    const statuses = gm.state.cells.map((c) => c.status);
     expect(statuses.every((s) => s === CellStatus.Hidden)).toBe(true);
   });
 });

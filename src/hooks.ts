@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GameManager } from "./domain";
 
-export function useGameManager(size: number = 4) {
-  const [gameState, setGameState] = useState(GameManager.getInstance().state);
+export function useGameManager(size: number = 4, checkDelay: number = 2000) {
+  const gm = useRef(new GameManager(size));
+  const [gameState, setGameState] = useState(gm.current.state);
   const [selectedIndex, setSelectedIndex] = useState<number>();
 
   function selectCell(index: number): void {
-    const gm = GameManager.getInstance();
-    const newState = gm.selectCell(index);
+    const newState = gm.current.selectCell(index);
     setGameState(newState);
     setSelectedIndex(index);
   }
@@ -15,12 +15,11 @@ export function useGameManager(size: number = 4) {
   useEffect(() => {
     if (selectedIndex) {
       setTimeout(() => {
-        const gm = GameManager.getInstance();
-        const newState = gm.checkMatch();
+        const newState = gm.current.checkMatch();
         setGameState(newState);
-      }, 2000);
+      }, checkDelay);
     }
-  }, [selectedIndex]);
+  }, [selectedIndex, checkDelay]);
 
   return { gameState, selectCell };
 }

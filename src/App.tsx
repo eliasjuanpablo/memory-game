@@ -11,10 +11,11 @@ function App() {
   return (
     <div className="wrapper">
       <div className="grid">
-        {cells.map((c, index) => (
+        {cells.map(({ value, status }, index) => (
           <Cell
             key={index}
-            {...c}
+            value={value}
+            status={status}
             onClick={() => {
               selectCell(index);
             }}

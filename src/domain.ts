@@ -1,28 +1,21 @@
 import shuffle from "lodash/shuffle";
 import { CellStatus, ICell, IGameState } from "./types";
 
+const DEFAULT_GRID_SIZE = 4;
+
 export class GameManager {
   private cells: ICell[];
   private finished: boolean = false;
-  private static instance: GameManager;
 
-  constructor(size: number = 4) {
+  constructor(size: number = DEFAULT_GRID_SIZE) {
     this.cells = this._generateCells(size);
-  }
-
-  static getInstance(): GameManager {
-    if (this.instance) {
-      return this.instance;
-    }
-    this.instance = new GameManager();
-    return this.instance;
   }
 
   private _findCellsByStatus(status: CellStatus): ICell[] {
     return this.cells.filter((c) => c.status === status);
   }
 
-  private _generateCells(size: number = 4): ICell[] {
+  private _generateCells(size: number): ICell[] {
     const values = shuffle([
       ...Array(size * 2).keys(),
       ...Array(size * 2).keys(),
@@ -70,20 +63,10 @@ export class GameManager {
 
     if (this.cells[index].status !== CellStatus.Hidden) return this.state;
 
-    if (selected.length === 0) {
+    if (selected.length < 2) {
       this.cells = this.cells.map((c, i) =>
         i === index ? { ...c, status: CellStatus.Selected } : c
       );
-    }
-    if (selected.length === 1) {
-      const alreadySelectedIndex = this.cells.findIndex(
-        (c) => c.status === CellStatus.Selected
-      );
-      if (index === alreadySelectedIndex) {
-        // selected an already selected cell, do nothing
-        return this.state;
-      }
-      this.cells[index].status = CellStatus.Selected;
     }
 
     return this.state;
