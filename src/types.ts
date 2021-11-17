@@ -13,6 +13,7 @@ export interface IGameState {
   cells: ICell[];
   finished: boolean;
   players: IPlayer[];
+  currentTurn: number;
 }
 
 export interface IGameSettings {

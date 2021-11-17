@@ -1,7 +1,13 @@
 import countBy from "lodash/countBy";
 
 import { GameManager } from "./domain";
-import { CellStatus } from "./types";
+import { CellStatus, IGameState } from "./types";
+
+function makePlay(gm: GameManager, cells: number[]): IGameState {
+  gm.selectCell(cells[0]);
+  gm.selectCell(cells[1]);
+  return gm.checkMatch();
+}
 
 describe("cells generation", () => {
   it("should have proper size", () => {
@@ -49,6 +55,25 @@ describe("players handling", () => {
     const { players } = gm.state;
     expect(players.length).toBe(2);
     expect(players.every((p) => p.points === 0)).toBe(true);
+  });
+
+  it("should track current turn for a single player", () => {
+    const gm = new GameManager();
+    gm["cells"] = gm["cells"]
+      .slice(0, 2)
+      .map((c, index) => ({ ...c, value: index })); // make sure cells will never match
+    expect(gm.state.currentTurn).toBe(0);
+    expect(makePlay(gm, [0, 1]).currentTurn).toBe(0);
+  });
+
+  it("should track current turn for multiple players", () => {
+    const gm = new GameManager({ players: 2 });
+    gm["cells"] = gm["cells"]
+      .slice(0, 2)
+      .map((c, index) => ({ ...c, value: index })); // make sure cells will never match
+    expect(gm.state.currentTurn).toBe(0);
+    expect(makePlay(gm, [0, 1]).currentTurn).toBe(1);
+    expect(makePlay(gm, [0, 1]).currentTurn).toBe(0);
   });
 });
 
@@ -107,9 +132,7 @@ describe("game manager plays", () => {
     const checkWinSpy = jest.spyOn(GameManager.prototype as any, "_checkWin");
     const gm = new GameManager();
     gm["cells"] = gm["cells"].slice(0, 2).map((c) => ({ ...c, value: 0 }));
-    gm.selectCell(0);
-    gm.selectCell(1);
-    gm.checkMatch();
+    makePlay(gm, [0, 1]);
     const { finished } = gm.state;
     expect(finished).toBe(true);
     expect(checkWinSpy).toHaveBeenCalled();

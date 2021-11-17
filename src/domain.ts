@@ -7,6 +7,7 @@ export class GameManager {
   private cells: ICell[];
   private finished: boolean = false;
   private players: IPlayer[];
+  private currentTurn: number = 0;
 
   constructor(settings: IGameSettings = {}) {
     this.cells = this._generateCells(settings.size || DEFAULT_GRID_SIZE);
@@ -42,6 +43,7 @@ export class GameManager {
       cells: this.cells,
       finished: this.finished,
       players: this.players,
+      currentTurn: this.currentTurn,
     };
   }
 
@@ -49,6 +51,7 @@ export class GameManager {
     const selectedCells = this.cells
       .map((c, index) => ({ ...c, index }))
       .filter((c) => c.status === CellStatus.Selected);
+
     if (selectedCells.length !== 2) return this.state; // do nothing
 
     const [c1, c2] = selectedCells;
@@ -63,6 +66,8 @@ export class GameManager {
     if (this._checkWin()) {
       this.finished = true;
     }
+
+    this.currentTurn = (this.currentTurn + 1) % this.players.length;
 
     return this.state;
   }
