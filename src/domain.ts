@@ -64,13 +64,13 @@ export class GameManager {
     } else {
       this.cells[c1.index].status = CellStatus.Hidden;
       this.cells[c2.index].status = CellStatus.Hidden;
+      this.currentTurn = (this.currentTurn + 1) % this.players.length;
     }
 
     if (this._checkWin()) {
       this.finished = true;
     }
 
-    this.currentTurn = (this.currentTurn + 1) % this.players.length;
     this.movesCount += 1;
 
     return this.state;

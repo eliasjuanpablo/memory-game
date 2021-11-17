@@ -98,6 +98,13 @@ describe("players handling", () => {
     expect(makeUnmatch(gm).currentTurn).toBe(1);
     expect(makeUnmatch(gm).currentTurn).toBe(0);
   });
+
+  it("should keep current turn if match is correct", () => {
+    const gm = new GameManager({ players: 2 });
+    expect(gm.state.currentTurn).toBe(0);
+    expect(makeMatch(gm).currentTurn).toBe(0);
+    expect(makeMatch(gm).currentTurn).toBe(0);
+  });
 });
 
 describe("game manager plays", () => {
