@@ -9,6 +9,34 @@ function makePlay(gm: GameManager, cells: number[]): IGameState {
   return gm.checkMatch();
 }
 
+function makeMatch(gm: GameManager): IGameState {
+  const { cells } = gm.state;
+  const firstHiddenIndex = cells.findIndex(
+    (c) => c.status === CellStatus.Hidden
+  );
+  const matchingCellIndex = cells.findIndex(
+    (c, index) =>
+      index !== firstHiddenIndex && c.value === cells[firstHiddenIndex].value
+  );
+
+  return makePlay(gm, [firstHiddenIndex, matchingCellIndex]);
+}
+
+function makeUnmatch(gm: GameManager): IGameState {
+  const { cells } = gm.state;
+  const firstHiddenIndex = cells.findIndex(
+    (c) => c.status === CellStatus.Hidden
+  );
+  const unmatchingCellIndex = cells.findIndex(
+    (c, index) =>
+      index !== firstHiddenIndex &&
+      c.status === CellStatus.Hidden &&
+      c.value !== cells[firstHiddenIndex].value
+  );
+
+  return makePlay(gm, [firstHiddenIndex, unmatchingCellIndex]);
+}
+
 describe("cells generation", () => {
   it("should have proper size", () => {
     const gm = new GameManager();
@@ -59,21 +87,16 @@ describe("players handling", () => {
 
   it("should track current turn for a single player", () => {
     const gm = new GameManager();
-    gm["cells"] = gm["cells"]
-      .slice(0, 2)
-      .map((c, index) => ({ ...c, value: index })); // make sure cells will never match
     expect(gm.state.currentTurn).toBe(0);
-    expect(makePlay(gm, [0, 1]).currentTurn).toBe(0);
+
+    expect(makeUnmatch(gm).currentTurn).toBe(0);
   });
 
   it("should track current turn for multiple players", () => {
     const gm = new GameManager({ players: 2 });
-    gm["cells"] = gm["cells"]
-      .slice(0, 2)
-      .map((c, index) => ({ ...c, value: index })); // make sure cells will never match
     expect(gm.state.currentTurn).toBe(0);
-    expect(makePlay(gm, [0, 1]).currentTurn).toBe(1);
-    expect(makePlay(gm, [0, 1]).currentTurn).toBe(0);
+    expect(makeUnmatch(gm).currentTurn).toBe(1);
+    expect(makeUnmatch(gm).currentTurn).toBe(0);
   });
 });
 
@@ -136,5 +159,20 @@ describe("game manager plays", () => {
     const { finished } = gm.state;
     expect(finished).toBe(true);
     expect(checkWinSpy).toHaveBeenCalled();
+  });
+});
+
+describe("players scoring", () => {
+  it("should increase when matching cells", () => {
+    const gm = new GameManager();
+    expect(gm.state.players[0].points).toBe(0);
+    makeMatch(gm);
+    expect(gm.state.players[0].points).toBe(1);
+  });
+  it("should only increase for current player", () => {
+    const gm = new GameManager({ players: 2 });
+    makeMatch(gm);
+    expect(gm.state.players[0].points).toBe(1);
+    expect(gm.state.players[1].points).toBe(0);
   });
 });

@@ -58,6 +58,7 @@ export class GameManager {
     if (c1.value === c2.value) {
       this.cells[c1.index].status = CellStatus.Revealed;
       this.cells[c2.index].status = CellStatus.Revealed;
+      this.players[this.currentTurn].points += 1;
     } else {
       this.cells[c1.index].status = CellStatus.Hidden;
       this.cells[c2.index].status = CellStatus.Hidden;
