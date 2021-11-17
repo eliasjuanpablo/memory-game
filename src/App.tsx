@@ -4,7 +4,8 @@ import StatsBar from "./components/StatsBar";
 import "./App.css";
 
 function App() {
-  const { gameState, selectCell } = useGameManager({ players: 3 });
+  const size = 6;
+  const { gameState, selectCell } = useGameManager({ players: 3, size });
 
   return (
     <div className="wrapper">
@@ -13,7 +14,14 @@ function App() {
         {/* <div className="menu">menu</div> */}
       </nav>
       <div className="grid-wrapper">
-        <div className="grid">
+        <div
+          className="grid"
+          style={{
+            fontSize: "0.6rem",
+            gridTemplateColumns: `repeat(${size}, 1fr)`,
+            gridTemplateRows: `repeat(${size}, 1fr)`,
+          }}
+        >
           {gameState.cells.map(({ value, status }, index) => (
             <Cell
               key={index}

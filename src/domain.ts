@@ -20,9 +20,10 @@ export class GameManager {
   }
 
   private _generateCells(size: number): ICell[] {
+    const square = size * size;
     const values = shuffle([
-      ...Array(size * 2).keys(),
-      ...Array(size * 2).keys(),
+      ...Array(square / 2).keys(),
+      ...Array(square / 2).keys(),
     ]);
     return values.map((value) => ({ value, status: CellStatus.Hidden }));
   }

@@ -28,6 +28,7 @@ export default function StatsBar(props: StatsBarProps) {
       {players.length > 1 &&
         players.map(({ points }, i) => (
           <Player
+            key={i}
             name={(i + 1).toString()}
             selected={currentTurn === i}
             points={points}
