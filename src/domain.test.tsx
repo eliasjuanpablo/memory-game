@@ -176,3 +176,13 @@ describe("players scoring", () => {
     expect(gm.state.players[1].points).toBe(0);
   });
 });
+
+describe("moves counter", () => {
+  it("should track every move", () => {
+    const gm = new GameManager();
+    makeUnmatch(gm);
+    makeUnmatch(gm);
+    makeMatch(gm);
+    expect(gm.state.movesCount).toBe(3);
+  });
+});

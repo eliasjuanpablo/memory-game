@@ -8,6 +8,7 @@ export class GameManager {
   private finished: boolean = false;
   private players: IPlayer[];
   private currentTurn: number = 0;
+  private movesCount: number = 0;
 
   constructor(settings: IGameSettings = {}) {
     this.cells = this._generateCells(settings.size || DEFAULT_GRID_SIZE);
@@ -44,6 +45,7 @@ export class GameManager {
       finished: this.finished,
       players: this.players,
       currentTurn: this.currentTurn,
+      movesCount: this.movesCount,
     };
   }
 
@@ -69,6 +71,7 @@ export class GameManager {
     }
 
     this.currentTurn = (this.currentTurn + 1) % this.players.length;
+    this.movesCount += 1;
 
     return this.state;
   }

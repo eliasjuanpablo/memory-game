@@ -14,6 +14,7 @@ export interface IGameState {
   finished: boolean;
   players: IPlayer[];
   currentTurn: number;
+  movesCount: number;
 }
 
 export interface IGameSettings {
