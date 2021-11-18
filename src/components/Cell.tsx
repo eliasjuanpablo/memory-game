@@ -27,7 +27,7 @@ const STATUS_COLOR_MAP: { [status in CellStatus]: string } = {
 
 const Wrapper = styled.div<{ status: CellStatus }>`
   background: ${(props) => STATUS_COLOR_MAP[props.status]};
-  font-size: 2rem;
+  font-size: inherit;
   height: 2.5em;
   width: 2.5em;
   border-radius: 50%;

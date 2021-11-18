@@ -13,7 +13,7 @@ function App() {
       <Nav>
         <Brand>memory</Brand>
       </Nav>
-      <GridWrapper>
+      <GridWrapper size={size}>
         <Grid size={size}>
           {gameState.cells.map(({ value, status }, index) => (
             <Cell
@@ -50,14 +50,20 @@ const Wrapper = styled.div`
   max-width: 100vw;
 `;
 
-const GridWrapper = styled.div`
+const GridWrapper = styled.div<{ size: number }>`
   display: block;
   margin: auto;
+
+  font-size: 2rem;
+
+  @media (max-width: 600px) {
+    font-size: ${(props) => props.size > 4 && "1.2rem"};
+  }
 `;
 
 const Grid = styled.div<{ size: number }>`
   display: grid;
-  gap: 1em 1em;
+  gap: 0.5em 0.5em;
   max-width: 500px;
   grid-template-columns: ${(props) => `repeat(${props.size}, auto)`};
   grid-template-rows: ${(props) => `repeat(${props.size}, auto)`};
