@@ -1,27 +1,20 @@
+import styled from "styled-components";
+
 import Cell from "./components/Cell";
 import { useGameManager } from "./hooks";
 import StatsBar from "./components/StatsBar";
-import "./App.css";
 
 function App() {
-  const size = 6;
+  const size = 4;
   const { gameState, selectCell } = useGameManager({ players: 3, size });
 
   return (
-    <div className="wrapper">
-      <nav>
-        <div className="brand">memory</div>
-        {/* <div className="menu">menu</div> */}
-      </nav>
-      <div className="grid-wrapper">
-        <div
-          className="grid"
-          style={{
-            fontSize: "0.6rem",
-            gridTemplateColumns: `repeat(${size}, 1fr)`,
-            gridTemplateRows: `repeat(${size}, 1fr)`,
-          }}
-        >
+    <Wrapper>
+      <Nav>
+        <Brand>memory</Brand>
+      </Nav>
+      <GridWrapper>
+        <Grid size={size}>
           {gameState.cells.map(({ value, status }, index) => (
             <Cell
               key={index}
@@ -32,11 +25,42 @@ function App() {
               }}
             />
           ))}
-        </div>
-      </div>
+        </Grid>
+      </GridWrapper>
       <StatsBar gameState={gameState} />
-    </div>
+    </Wrapper>
   );
 }
+
+const Nav = styled.nav`
+  padding: 0 2em;
+  display: flex;
+  align-items: center;
+`;
+
+const Brand = styled.div`
+  font-size: 2rem;
+  font-weight: bold;
+`;
+
+const Wrapper = styled.div`
+  display: grid;
+  grid-template-rows: 1fr 5fr 3fr;
+  height: 100vh;
+  max-width: 100vw;
+`;
+
+const GridWrapper = styled.div`
+  display: block;
+  margin: auto;
+`;
+
+const Grid = styled.div<{ size: number }>`
+  display: grid;
+  gap: 1em 1em;
+  max-width: 500px;
+  grid-template-columns: ${(props) => `repeat(${props.size}, auto)`};
+  grid-template-rows: ${(props) => `repeat(${props.size}, auto)`};
+`;
 
 export default App;

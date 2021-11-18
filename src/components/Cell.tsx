@@ -1,28 +1,39 @@
+import styled from "styled-components";
 import { CellStatus, ICell } from "../types";
-import "./Cell.css";
 
 type CellProps = ICell & { onClick: Function };
 
 export default function Cell(props: CellProps) {
   const { value, onClick, status } = props;
-  let style: React.CSSProperties = {};
-  if (status === CellStatus.Selected) {
-    style.background = "#fea112";
-  }
-  if (status === CellStatus.Revealed) {
-    style.background = "#bbceda";
-  }
 
   const isVisible = [CellStatus.Revealed, CellStatus.Selected].includes(status);
   return (
-    <div
-      className="cell"
+    <Wrapper
       onClick={() => {
         onClick();
       }}
-      style={style}
+      status={status}
     >
       {isVisible && value}
-    </div>
+    </Wrapper>
   );
 }
+
+const STATUS_COLOR_MAP: { [status in CellStatus]: string } = {
+  [CellStatus.Hidden]: "#31485a",
+  [CellStatus.Selected]: "#fea112",
+  [CellStatus.Revealed]: "#bbceda",
+};
+
+const Wrapper = styled.div<{ status: CellStatus }>`
+  background: ${(props) => STATUS_COLOR_MAP[props.status]};
+  font-size: 2rem;
+  height: 2.5em;
+  width: 2.5em;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  transition: background-color 0.5s ease;
+`;
