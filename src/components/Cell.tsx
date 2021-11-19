@@ -36,4 +36,5 @@ const Wrapper = styled.div<{ status: CellStatus }>`
   align-items: center;
   color: white;
   transition: background-color 0.5s ease;
+  cursor: pointer;
 `;

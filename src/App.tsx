@@ -5,6 +5,7 @@ import Cell from "./components/Cell";
 import StatsBar from "./components/StatsBar";
 import SettingsModal from "./components/SettingsModal";
 import { useGameManager } from "./hooks";
+import Button from "./components/Button";
 
 function App() {
   const [showSettings, setShowSettings] = useState(true);
@@ -26,6 +27,23 @@ function App() {
       )}
       <Nav>
         <Brand>memory</Brand>
+        <Menu>
+          <Button
+            onClick={() => {
+              changeSettings(gameState.currentSettings);
+            }}
+          >
+            Restart
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              setShowSettings(true);
+            }}
+          >
+            New Game
+          </Button>
+        </Menu>
       </Nav>
       <GridWrapper size={size}>
         <Grid size={size}>
@@ -50,11 +68,29 @@ const Nav = styled.nav`
   padding: 0 2em;
   display: flex;
   align-items: center;
+  margin: auto;
+  @media (min-width: 1024px) {
+    width: 50%;
+  }
 `;
 
 const Brand = styled.div`
   font-size: 2rem;
   font-weight: bold;
+`;
+
+const Menu = styled.div`
+  display: flex;
+  margin-left: auto;
+
+  & > * + * {
+    margin-left: 1em;
+  }
+
+  @media (max-width: 1024px) {
+    margin-left: 3em;
+    font-size: 0.75rem;
+  }
 `;
 
 const Wrapper = styled.div`

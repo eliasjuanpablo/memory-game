@@ -44,7 +44,7 @@ export default function SettingsModal(props: {
             setSize(value);
           }}
         />
-        <Button>Start game</Button>
+        <Button fullWidth>Start game</Button>
       </Form>
     </ModalWrapper>
   );

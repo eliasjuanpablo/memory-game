@@ -51,4 +51,5 @@ const Option = styled.div<{ selected: boolean }>`
   color: white;
   border-radius: 20px;
   font-weight: bold;
+  cursor: pointer;
 `;
