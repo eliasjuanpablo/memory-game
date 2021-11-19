@@ -15,11 +15,12 @@ export interface IGameState {
   players: IPlayer[];
   currentTurn: number;
   movesCount: number;
+  currentSettings: IGameSettings;
 }
 
 export interface IGameSettings {
-  size?: number;
-  players?: number;
+  size: number;
+  players: number;
 }
 
 export interface IPlayer {

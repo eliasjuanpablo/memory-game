@@ -9,10 +9,18 @@ export class GameManager {
   private players: IPlayer[];
   private currentTurn: number = 0;
   private movesCount: number = 0;
+  private currentSettings: IGameSettings;
 
-  constructor(settings: IGameSettings = {}) {
-    this.cells = this._generateCells(settings.size || DEFAULT_GRID_SIZE);
-    this.players = this._generatePlayers(settings.players || 1);
+  constructor(settings: Partial<IGameSettings>) {
+    const defaultSettings = {
+      size: DEFAULT_GRID_SIZE,
+      players: 1,
+    };
+    const currentSettings = Object.assign(defaultSettings, settings);
+
+    this.cells = this._generateCells(currentSettings.size);
+    this.players = this._generatePlayers(currentSettings.players);
+    this.currentSettings = currentSettings;
   }
 
   private _findCellsByStatus(status: CellStatus): ICell[] {
@@ -47,6 +55,7 @@ export class GameManager {
       players: this.players,
       currentTurn: this.currentTurn,
       movesCount: this.movesCount,
+      currentSettings: this.currentSettings,
     };
   }
 

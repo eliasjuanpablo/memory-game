@@ -5,8 +5,11 @@ import { useGameManager } from "./hooks";
 import StatsBar from "./components/StatsBar";
 
 function App() {
-  const size = 4;
-  const { gameState, selectCell } = useGameManager({ players: 3, size });
+  const { gameState, selectCell } = useGameManager({});
+  const {
+    currentSettings: { size },
+    cells,
+  } = gameState;
 
   return (
     <Wrapper>
@@ -15,7 +18,7 @@ function App() {
       </Nav>
       <GridWrapper size={size}>
         <Grid size={size}>
-          {gameState.cells.map(({ value, status }, index) => (
+          {cells.map(({ value, status }, index) => (
             <Cell
               key={index}
               value={value}
