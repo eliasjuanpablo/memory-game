@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import { GameManager } from "./domain";
 import { IGameSettings } from "./types";
 

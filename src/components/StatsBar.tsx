@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 import { IGameState, IPlayer } from "../types";
 
 interface StatsBarProps {

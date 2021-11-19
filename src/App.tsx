@@ -1,11 +1,14 @@
+import React, { useState } from "react";
 import styled from "styled-components";
 
 import Cell from "./components/Cell";
-import { useGameManager } from "./hooks";
 import StatsBar from "./components/StatsBar";
+import SettingsModal from "./components/SettingsModal";
+import { useGameManager } from "./hooks";
 
 function App() {
-  const { gameState, selectCell } = useGameManager({});
+  const [showSettings, setShowSettings] = useState(true);
+  const { gameState, selectCell, changeSettings } = useGameManager({});
   const {
     currentSettings: { size },
     cells,
@@ -13,6 +16,14 @@ function App() {
 
   return (
     <Wrapper>
+      {showSettings && (
+        <SettingsModal
+          changeSettings={changeSettings}
+          onClose={() => {
+            setShowSettings(false);
+          }}
+        />
+      )}
       <Nav>
         <Brand>memory</Brand>
       </Nav>
