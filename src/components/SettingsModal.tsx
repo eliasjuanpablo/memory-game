@@ -7,7 +7,7 @@ import Button from "./Button";
 import { DEFAULT_SETTINGS } from "../constants";
 
 export default function SettingsModal(props: {
-  changeSettings: (settings: IGameSettings) => void;
+  changeSettings: (settings: IGameSettings & { useIcons: boolean }) => void;
   onClose: () => void;
   currentSettings: IGameSettings;
 }) {
@@ -17,16 +17,28 @@ export default function SettingsModal(props: {
   const [size, setSize] = useState(
     props.currentSettings.size || DEFAULT_SETTINGS.size
   );
+  const [useIcons, setUseIcons] = useState(false);
 
   return (
     <ModalWrapper>
       <Form
         onSubmit={(e) => {
           e.preventDefault();
-          props.changeSettings({ players, size });
+          props.changeSettings({ players, size, useIcons });
           props.onClose();
         }}
       >
+        <RadioGroup
+          label={"Select theme"}
+          options={[
+            { label: "Numbers", value: false },
+            { label: "Icons", value: true },
+          ]}
+          onChange={(value) => {
+            setUseIcons(value);
+          }}
+          value={useIcons}
+        />
         <RadioGroup
           label={"Number of Players"}
           options={[

@@ -11,6 +11,7 @@ import GameOverModal from "./components/GameOverModal";
 
 function App() {
   const [showSettings, setShowSettings] = useState(true);
+  const [useIcons, setUseIcons] = useState(false);
   const { gameState, selectCell, changeSettings } = useGameManager({});
   const {
     currentSettings: { size, players },
@@ -55,7 +56,11 @@ function App() {
       )}
       {showSettings && (
         <SettingsModal
-          changeSettings={changeSettings}
+          changeSettings={(settings) => {
+            const { useIcons, ...rest } = settings;
+            setUseIcons(useIcons);
+            changeSettings(rest);
+          }}
           onClose={() => {
             setShowSettings(false);
           }}
@@ -81,6 +86,7 @@ function App() {
               onClick={() => {
                 selectCell(index);
               }}
+              useIcons={useIcons}
             />
           ))}
         </Grid>

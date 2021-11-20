@@ -1,12 +1,19 @@
 import styled from "styled-components";
 import { CellStatus, ICell } from "../types";
 
-type CellProps = ICell & { onClick: Function };
+type CellProps = ICell & { onClick: Function; useIcons: boolean };
 
 export default function Cell(props: CellProps) {
-  const { value, onClick, status } = props;
+  const { value, onClick, status, useIcons } = props;
 
   const isVisible = [CellStatus.Revealed, CellStatus.Selected].includes(status);
+
+  const content = useIcons ? (
+    <img style={{ width: "60%" }} src={`icons/icon-${value}.svg`} alt="icon" />
+  ) : (
+    value
+  );
+
   return (
     <Wrapper
       onClick={() => {
@@ -14,7 +21,7 @@ export default function Cell(props: CellProps) {
       }}
       status={status}
     >
-      {isVisible && value}
+      {isVisible && content}
     </Wrapper>
   );
 }
