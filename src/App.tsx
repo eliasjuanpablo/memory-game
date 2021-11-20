@@ -23,6 +23,7 @@ function App() {
           onClose={() => {
             setShowSettings(false);
           }}
+          currentSettings={gameState.currentSettings}
         />
       )}
       <Nav>
@@ -95,7 +96,6 @@ const Menu = styled.div`
 
 const Wrapper = styled.div`
   display: grid;
-  grid-template-rows: 1fr 5fr 3fr;
   height: 100vh;
   max-width: 100vw;
 `;

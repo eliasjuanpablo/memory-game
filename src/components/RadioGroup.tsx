@@ -5,6 +5,7 @@ export default function RadioGroup<T>(props: {
   label: string;
   options: { label: string; value: T }[];
   onChange: (value: T) => void;
+  value: T;
 }) {
   const { label, options, onChange } = props;
   const [selectedIndex, setSelectedIndex] = useState<number>();
@@ -19,9 +20,7 @@ export default function RadioGroup<T>(props: {
               setSelectedIndex(index);
               onChange(value);
             }}
-            selected={
-              (!selectedIndex && index === 0) || selectedIndex === index
-            }
+            selected={props.value === value || selectedIndex === index}
           >
             {label}
           </Option>

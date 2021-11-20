@@ -12,7 +12,6 @@ export class GameManager {
 
   constructor(settings: Partial<IGameSettings>) {
     const currentSettings = Object.assign(DEFAULT_SETTINGS, settings);
-    console.log(currentSettings);
 
     this.cells = this._generateCells(currentSettings.size);
     this.players = this._generatePlayers(currentSettings.players);

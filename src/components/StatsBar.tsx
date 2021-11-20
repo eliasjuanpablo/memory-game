@@ -21,12 +21,12 @@ function Player(props: IPlayer & { name: string; selected: boolean }) {
 
 export default function StatsBar(props: StatsBarProps) {
   const {
-    gameState: { players, currentTurn },
+    gameState: { players, currentTurn, movesCount },
   } = props;
 
   return (
     <Wrapper>
-      {players.length > 1 &&
+      {players.length > 1 ? (
         players.map(({ points }, i) => (
           <Player
             key={i}
@@ -34,7 +34,19 @@ export default function StatsBar(props: StatsBarProps) {
             selected={currentTurn === i}
             points={points}
           />
-        ))}
+        ))
+      ) : (
+        <>
+          <Stat>
+            <StatName>Moves</StatName>
+            <StatValue>{movesCount}</StatValue>
+          </Stat>
+          <Stat>
+            <StatName>Time</StatName>
+            <StatValue>0:00</StatValue>
+          </Stat>
+        </>
+      )}
     </Wrapper>
   );
 }
@@ -90,4 +102,26 @@ const Arrow = styled.div`
   /* Border */
   transform: translate(-50%, -50%) rotate(45deg);
   background-color: #fea112;
+`;
+
+const Stat = styled.div`
+  padding: 1em 2em;
+  background: #bbceda;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
+
+  & + & {
+    margin-left: 1em;
+  }
+`;
+
+const StatName = styled.div`
+  color: #31485a;
+`;
+
+const StatValue = styled.div`
+  margin-top: 0.5em;
+  font-size: 1.5em;
+  color: #31485a;
 `;

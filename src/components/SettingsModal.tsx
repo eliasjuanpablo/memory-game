@@ -9,9 +9,14 @@ import { DEFAULT_SETTINGS } from "../constants";
 export default function SettingsModal(props: {
   changeSettings: (settings: IGameSettings) => void;
   onClose: () => void;
+  currentSettings: IGameSettings;
 }) {
-  const [players, setPlayers] = useState(DEFAULT_SETTINGS.players);
-  const [size, setSize] = useState(DEFAULT_SETTINGS.size);
+  const [players, setPlayers] = useState(
+    props.currentSettings.players || DEFAULT_SETTINGS.players
+  );
+  const [size, setSize] = useState(
+    props.currentSettings.size || DEFAULT_SETTINGS.size
+  );
 
   return (
     <ModalWrapper>
@@ -33,6 +38,7 @@ export default function SettingsModal(props: {
           onChange={(value) => {
             setPlayers(value);
           }}
+          value={players}
         />
         <RadioGroup
           label={"Grid Size"}
@@ -43,6 +49,7 @@ export default function SettingsModal(props: {
           onChange={(value) => {
             setSize(value);
           }}
+          value={size}
         />
         <Button fullWidth>Start game</Button>
       </Form>
