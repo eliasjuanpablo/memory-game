@@ -39,13 +39,13 @@ function makeUnmatch(gm: GameManager): IGameState {
 
 describe("cells generation", () => {
   it("should have proper size", () => {
-    const gm = new GameManager();
+    const gm = new GameManager({});
     const size = 4;
     expect(gm["_generateCells"](size)).toHaveLength(size * size);
   });
 
   it("should have values repeated twice", () => {
-    const gm = new GameManager();
+    const gm = new GameManager({});
     const result = gm["_generateCells"](4);
     const counts = countBy(result.map((v) => v.value));
     expect(Object.values(counts).every((c) => c === 2)).toBe(true);
@@ -53,7 +53,7 @@ describe("cells generation", () => {
 
   it("should be shuffled", () => {
     // not the best check but as soon as it's not "sorted" it's ok
-    const gm = new GameManager();
+    const gm = new GameManager({});
     const result = gm["_generateCells"](4);
     expect(result.map((c) => c.value)).not.toBe([
       0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7,
@@ -61,7 +61,7 @@ describe("cells generation", () => {
   });
 
   it("should initialize cells properly", () => {
-    const gm = new GameManager();
+    const gm = new GameManager({});
     const statuses = gm.state.cells.map((c) => c.status);
     expect(statuses.every((s) => s === CellStatus.Hidden)).toBe(true);
   });
@@ -69,7 +69,7 @@ describe("cells generation", () => {
 
 describe("game manager initialization", () => {
   it("initializes private variables properly", () => {
-    const gm = new GameManager();
+    const gm = new GameManager({});
     const { cells, finished, players } = gm.state;
     expect(cells).not.toBeUndefined();
     expect(finished).not.toBeUndefined();
@@ -85,8 +85,8 @@ describe("players handling", () => {
     expect(players.every((p) => p.points === 0)).toBe(true);
   });
 
-  it("should track current turn for a single player", () => {
-    const gm = new GameManager();
+  it.only("should track current turn for a single player", () => {
+    const gm = new GameManager({});
     expect(gm.state.currentTurn).toBe(0);
 
     expect(makeUnmatch(gm).currentTurn).toBe(0);
@@ -109,7 +109,7 @@ describe("players handling", () => {
 
 describe("game manager plays", () => {
   it("selects a cell when nothing is selected", () => {
-    const gm = new GameManager();
+    const gm = new GameManager({});
     const index = 0;
     const { cells } = gm.selectCell(index);
     expect(cells[index].status).toBe(CellStatus.Selected);
@@ -119,7 +119,7 @@ describe("game manager plays", () => {
   });
 
   it("reveals cells when matched", () => {
-    const gm = new GameManager();
+    const gm = new GameManager({});
     const firstCell = gm["cells"][0];
     firstCell.status = CellStatus.Selected;
     const matchingIndex =
@@ -134,7 +134,7 @@ describe("game manager plays", () => {
   });
 
   it("does nothing when matching a cell with itself", () => {
-    const gm = new GameManager();
+    const gm = new GameManager({});
     const firstCell = gm["cells"][0];
     firstCell.status = CellStatus.Selected;
     const originalState = gm.state;
@@ -145,7 +145,7 @@ describe("game manager plays", () => {
   });
 
   it("hides cells when different", () => {
-    const gm = new GameManager();
+    const gm = new GameManager({});
     const firstCell = gm["cells"][0];
     firstCell.status = CellStatus.Selected;
     const unmatchedIndex =
@@ -160,7 +160,7 @@ describe("game manager plays", () => {
 
   it("handles game finish", () => {
     const checkWinSpy = jest.spyOn(GameManager.prototype as any, "_checkWin");
-    const gm = new GameManager();
+    const gm = new GameManager({});
     gm["cells"] = gm["cells"].slice(0, 2).map((c) => ({ ...c, value: 0 }));
     makePlay(gm, [0, 1]);
     const { finished } = gm.state;
@@ -171,7 +171,7 @@ describe("game manager plays", () => {
 
 describe("players scoring", () => {
   it("should increase when matching cells", () => {
-    const gm = new GameManager();
+    const gm = new GameManager({});
     expect(gm.state.players[0].points).toBe(0);
     makeMatch(gm);
     expect(gm.state.players[0].points).toBe(1);
@@ -186,7 +186,7 @@ describe("players scoring", () => {
 
 describe("moves counter", () => {
   it("should track every move", () => {
-    const gm = new GameManager();
+    const gm = new GameManager({});
     makeUnmatch(gm);
     makeUnmatch(gm);
     makeMatch(gm);

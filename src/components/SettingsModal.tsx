@@ -4,14 +4,14 @@ import styled from "styled-components";
 import { IGameSettings } from "../types";
 import RadioGroup from "./RadioGroup";
 import Button from "./Button";
+import { DEFAULT_SETTINGS } from "../constants";
 
 export default function SettingsModal(props: {
   changeSettings: (settings: IGameSettings) => void;
   onClose: () => void;
 }) {
-  // TODO: move default settings somewhere else
-  const [players, setPlayers] = useState(1);
-  const [size, setSize] = useState(4);
+  const [players, setPlayers] = useState(DEFAULT_SETTINGS.players);
+  const [size, setSize] = useState(DEFAULT_SETTINGS.size);
 
   return (
     <ModalWrapper>

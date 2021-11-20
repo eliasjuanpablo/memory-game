@@ -1,7 +1,6 @@
 import shuffle from "lodash/shuffle";
+import { DEFAULT_SETTINGS } from "./constants";
 import { CellStatus, ICell, IGameSettings, IGameState, IPlayer } from "./types";
-
-const DEFAULT_GRID_SIZE = 4;
 
 export class GameManager {
   private cells: ICell[];
@@ -12,11 +11,8 @@ export class GameManager {
   private currentSettings: IGameSettings;
 
   constructor(settings: Partial<IGameSettings>) {
-    const defaultSettings = {
-      size: DEFAULT_GRID_SIZE,
-      players: 1,
-    };
-    const currentSettings = Object.assign(defaultSettings, settings);
+    const currentSettings = Object.assign(DEFAULT_SETTINGS, settings);
+    console.log(currentSettings);
 
     this.cells = this._generateCells(currentSettings.size);
     this.players = this._generatePlayers(currentSettings.players);
