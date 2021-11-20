@@ -4,6 +4,7 @@ import { IGameState, IPlayer } from "../types";
 
 interface StatsBarProps {
   gameState: IGameState;
+  elapsedTime: string;
 }
 
 function Player(props: IPlayer & { name: string; selected: boolean }) {
@@ -22,6 +23,7 @@ function Player(props: IPlayer & { name: string; selected: boolean }) {
 export default function StatsBar(props: StatsBarProps) {
   const {
     gameState: { players, currentTurn, movesCount },
+    elapsedTime,
   } = props;
 
   return (
@@ -43,7 +45,7 @@ export default function StatsBar(props: StatsBarProps) {
           </Stat>
           <Stat>
             <StatName>Time</StatName>
-            <StatValue>0:00</StatValue>
+            <StatValue>{elapsedTime}</StatValue>
           </Stat>
         </>
       )}

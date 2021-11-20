@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import Cell from "./components/Cell";
@@ -6,14 +6,33 @@ import StatsBar from "./components/StatsBar";
 import SettingsModal from "./components/SettingsModal";
 import { useGameManager } from "./hooks";
 import Button from "./components/Button";
+import { useStopwatch } from "react-timer-hook";
 
 function App() {
   const [showSettings, setShowSettings] = useState(true);
   const { gameState, selectCell, changeSettings } = useGameManager({});
   const {
-    currentSettings: { size },
+    currentSettings: { size, players },
     cells,
+    finished,
   } = gameState;
+  const { minutes, seconds, start, pause, reset } = useStopwatch({
+    autoStart: false,
+  });
+
+  useEffect(() => {
+    if (!showSettings && players === 1) {
+      start();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [players, showSettings]);
+
+  useEffect(() => {
+    if (finished) {
+      pause();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [finished]);
 
   return (
     <Wrapper>
@@ -32,6 +51,7 @@ function App() {
           <Button
             onClick={() => {
               changeSettings(gameState.currentSettings);
+              reset();
             }}
           >
             Restart
@@ -60,7 +80,12 @@ function App() {
           ))}
         </Grid>
       </GridWrapper>
-      <StatsBar gameState={gameState} />
+      <StatsBar
+        gameState={gameState}
+        elapsedTime={`${minutes.toString().padStart(2, "0")}:${seconds
+          .toString()
+          .padStart(2, "0")}`}
+      />
     </Wrapper>
   );
 }
