@@ -32,7 +32,8 @@ export class GameManager {
   }
 
   private _generatePlayers(players: number): IPlayer[] {
-    return [...Array(players).keys()].map(() => ({
+    return [...Array(players).keys()].map((i) => ({
+      name: (i + 1).toString(),
       points: 0,
     }));
   }

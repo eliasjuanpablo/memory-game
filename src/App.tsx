@@ -7,6 +7,7 @@ import SettingsModal from "./components/SettingsModal";
 import { useGameManager } from "./hooks";
 import Button from "./components/Button";
 import { useStopwatch } from "react-timer-hook";
+import GameOverModal from "./components/GameOverModal";
 
 function App() {
   const [showSettings, setShowSettings] = useState(true);
@@ -34,8 +35,24 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [finished]);
 
+  function restartGame() {
+    changeSettings(gameState.currentSettings);
+    reset();
+  }
+
+  function newGame() {
+    setShowSettings(true);
+  }
+
   return (
     <Wrapper>
+      {finished && (
+        <GameOverModal
+          gameState={gameState}
+          onRestart={restartGame}
+          onNewGame={newGame}
+        />
+      )}
       {showSettings && (
         <SettingsModal
           changeSettings={changeSettings}
@@ -48,20 +65,8 @@ function App() {
       <Nav>
         <Brand>memory</Brand>
         <Menu>
-          <Button
-            onClick={() => {
-              changeSettings(gameState.currentSettings);
-              reset();
-            }}
-          >
-            Restart
-          </Button>
-          <Button
-            variant="secondary"
-            onClick={() => {
-              setShowSettings(true);
-            }}
-          >
+          <Button onClick={restartGame}>Restart</Button>
+          <Button variant="secondary" onClick={newGame}>
             New Game
           </Button>
         </Menu>

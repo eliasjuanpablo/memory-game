@@ -31,7 +31,8 @@ export function useGameManager(
   }, [gm]);
 
   function changeSettings(settings: IGameSettings) {
-    setGm(new GameManager(settings));
+    const gm = new GameManager(settings);
+    setGm(gm);
   }
 
   return { gameState, selectCell, changeSettings };

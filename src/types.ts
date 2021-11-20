@@ -25,4 +25,5 @@ export interface IGameSettings {
 
 export interface IPlayer {
   points: number;
+  name: string;
 }

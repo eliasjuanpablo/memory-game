@@ -29,10 +29,10 @@ export default function StatsBar(props: StatsBarProps) {
   return (
     <Wrapper>
       {players.length > 1 ? (
-        players.map(({ points }, i) => (
+        players.map(({ points, name }, i) => (
           <Player
             key={i}
-            name={(i + 1).toString()}
+            name={name}
             selected={currentTurn === i}
             points={points}
           />
