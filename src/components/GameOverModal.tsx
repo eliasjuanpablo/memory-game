@@ -7,6 +7,7 @@ interface IGameOverModalProps {
   gameState: IGameState;
   onRestart: Function;
   onNewGame: Function;
+  lastTime: string;
 }
 
 export default function GameOverModal(props: IGameOverModalProps) {
@@ -14,6 +15,7 @@ export default function GameOverModal(props: IGameOverModalProps) {
     gameState: { players },
     onNewGame,
     onRestart,
+    lastTime,
   } = props;
 
   const sortedPlayers = Array.from(players).sort(
@@ -42,6 +44,7 @@ export default function GameOverModal(props: IGameOverModalProps) {
             <PlayerScore>{points} Pairs</PlayerScore>
           </PlayerResultWrapper>
         ))}
+        {players.length === 1 && <div>It took you {lastTime}</div>}
         <Actions>
           <Button
             onClick={() => {

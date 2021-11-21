@@ -9,6 +9,12 @@ import Button from "./components/Button";
 import { useStopwatch } from "react-timer-hook";
 import GameOverModal from "./components/GameOverModal";
 
+function formatElapsed(seconds: number, minutes: number): string {
+  return `${minutes.toString().padStart(2, "0")}:${seconds
+    .toString()
+    .padStart(2, "0")}`;
+}
+
 function App() {
   const [showSettings, setShowSettings] = useState(true);
   const [useIcons, setUseIcons] = useState(false);
@@ -21,6 +27,7 @@ function App() {
   const { minutes, seconds, start, pause, reset } = useStopwatch({
     autoStart: false,
   });
+  const [lastTime, setLastTime] = useState("");
 
   useEffect(() => {
     if (!showSettings && players === 1) {
@@ -31,7 +38,10 @@ function App() {
 
   useEffect(() => {
     if (finished) {
+      setLastTime(formatElapsed(seconds, minutes));
       pause();
+    } else {
+      reset();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [finished]);
@@ -52,6 +62,7 @@ function App() {
           gameState={gameState}
           onRestart={restartGame}
           onNewGame={newGame}
+          lastTime={lastTime}
         />
       )}
       {showSettings && (
@@ -93,9 +104,7 @@ function App() {
       </GridWrapper>
       <StatsBar
         gameState={gameState}
-        elapsedTime={`${minutes.toString().padStart(2, "0")}:${seconds
-          .toString()
-          .padStart(2, "0")}`}
+        elapsedTime={formatElapsed(seconds, minutes)}
       />
     </Wrapper>
   );
