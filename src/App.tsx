@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 
 import Cell from "./components/Cell";
 import StatsBar from "./components/StatsBar";
@@ -8,6 +8,7 @@ import { useGameManager } from "./hooks";
 import Button from "./components/Button";
 import { useStopwatch } from "react-timer-hook";
 import GameOverModal from "./components/GameOverModal";
+import { theme } from "./constants";
 
 function formatElapsed(seconds: number, minutes: number): string {
   return `${minutes.toString().padStart(2, "0")}:${seconds
@@ -56,57 +57,59 @@ function App() {
   }
 
   return (
-    <Wrapper>
-      {finished && (
-        <GameOverModal
+    <ThemeProvider theme={theme}>
+      <Wrapper>
+        {finished && (
+          <GameOverModal
+            gameState={gameState}
+            onRestart={restartGame}
+            onNewGame={newGame}
+            lastTime={lastTime}
+          />
+        )}
+        {showSettings && (
+          <SettingsModal
+            changeSettings={(settings) => {
+              const { useIcons, ...rest } = settings;
+              setUseIcons(useIcons);
+              changeSettings(rest);
+            }}
+            onClose={() => {
+              setShowSettings(false);
+            }}
+            currentSettings={gameState.currentSettings}
+          />
+        )}
+        <Nav>
+          <Brand>memory</Brand>
+          <Menu>
+            <Button onClick={restartGame}>Restart</Button>
+            <Button variant="secondary" onClick={newGame}>
+              New Game
+            </Button>
+          </Menu>
+        </Nav>
+        <GridWrapper size={size}>
+          <Grid size={size}>
+            {cells.map(({ value, status }, index) => (
+              <Cell
+                key={index}
+                value={value}
+                status={status}
+                onClick={() => {
+                  selectCell(index);
+                }}
+                useIcons={useIcons}
+              />
+            ))}
+          </Grid>
+        </GridWrapper>
+        <StatsBar
           gameState={gameState}
-          onRestart={restartGame}
-          onNewGame={newGame}
-          lastTime={lastTime}
+          elapsedTime={formatElapsed(seconds, minutes)}
         />
-      )}
-      {showSettings && (
-        <SettingsModal
-          changeSettings={(settings) => {
-            const { useIcons, ...rest } = settings;
-            setUseIcons(useIcons);
-            changeSettings(rest);
-          }}
-          onClose={() => {
-            setShowSettings(false);
-          }}
-          currentSettings={gameState.currentSettings}
-        />
-      )}
-      <Nav>
-        <Brand>memory</Brand>
-        <Menu>
-          <Button onClick={restartGame}>Restart</Button>
-          <Button variant="secondary" onClick={newGame}>
-            New Game
-          </Button>
-        </Menu>
-      </Nav>
-      <GridWrapper size={size}>
-        <Grid size={size}>
-          {cells.map(({ value, status }, index) => (
-            <Cell
-              key={index}
-              value={value}
-              status={status}
-              onClick={() => {
-                selectCell(index);
-              }}
-              useIcons={useIcons}
-            />
-          ))}
-        </Grid>
-      </GridWrapper>
-      <StatsBar
-        gameState={gameState}
-        elapsedTime={formatElapsed(seconds, minutes)}
-      />
-    </Wrapper>
+      </Wrapper>
+    </ThemeProvider>
   );
 }
 

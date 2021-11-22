@@ -27,3 +27,14 @@ export interface IPlayer {
   points: number;
   name: string;
 }
+
+export interface IColors {
+  primary: string;
+  secondary: string;
+  grey: string;
+  neutral: string;
+}
+
+export interface ITheme {
+  colors: IColors;
+}

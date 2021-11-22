@@ -35,7 +35,7 @@ const Wrapper = styled.div``;
 const Label = styled.div`
   display: block;
   margin-bottom: 0.5em;
-  color: #30485a;
+  color: ${(props) => props.theme.colors.secondary};
 `;
 const OptionsWrapper = styled.div`
   display: flex;
@@ -46,8 +46,9 @@ const OptionsWrapper = styled.div`
 `;
 const Option = styled.div<{ selected: boolean }>`
   padding: 0.5em 2em;
-  background: ${(props) => (props.selected ? "#30485a" : "#bcceda")};
-  color: white;
+  background: ${(props) =>
+    props.selected ? props.theme.colors.secondary : "#bcceda"};
+  color: ${(props) => props.theme.colors.neutral};
   border-radius: 20px;
   font-weight: bold;
   cursor: pointer;

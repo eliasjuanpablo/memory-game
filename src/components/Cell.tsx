@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { CellStatus, ICell } from "../types";
+import { CellStatus, ICell, ITheme } from "../types";
 
 type CellProps = ICell & { onClick: Function; useIcons: boolean };
 
@@ -26,14 +26,18 @@ export default function Cell(props: CellProps) {
   );
 }
 
-const STATUS_COLOR_MAP: { [status in CellStatus]: string } = {
-  [CellStatus.Hidden]: "#31485a",
-  [CellStatus.Selected]: "#fea112",
-  [CellStatus.Revealed]: "#bbceda",
-};
+function getStatusColorMap(status: CellStatus, theme: ITheme): string {
+  const mapping = {
+    [CellStatus.Hidden]: theme.colors.secondary,
+    [CellStatus.Selected]: theme.colors.primary,
+    [CellStatus.Revealed]: theme.colors.grey,
+  };
+
+  return mapping[status];
+}
 
 const Wrapper = styled.div<{ status: CellStatus }>`
-  background: ${(props) => STATUS_COLOR_MAP[props.status]};
+  background: ${(props) => getStatusColorMap(props.status, props.theme)};
   font-size: inherit;
   height: 2.5em;
   width: 2.5em;
@@ -41,7 +45,7 @@ const Wrapper = styled.div<{ status: CellStatus }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: white;
+  color: ${(props) => props.theme.colors.neutral};
   transition: background-color 0.5s ease;
   cursor: pointer;
 `;

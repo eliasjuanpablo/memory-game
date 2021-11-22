@@ -66,8 +66,8 @@ const PlayerWrapper = styled.div<{ selected: boolean }>`
   flex-direction: column;
   align-items: center;
   padding: 1em 1.5em;
-  background: #bbceda;
-  color: #31485a;
+  background: ${(props) => props.theme.colors.grey};
+  color: ${(props) => props.theme.colors.secondary};
   border-radius: 5px;
   font-size: 1.2rem;
   font-weight: bold;
@@ -75,8 +75,8 @@ const PlayerWrapper = styled.div<{ selected: boolean }>`
   ${(props) =>
     props.selected &&
     `
-  background: #fea112;
-  color: white;
+  background: ${props.theme.colors.primary};
+  color: ${props.theme.colors.neutral};
   `}
 
   & + & {
@@ -94,7 +94,6 @@ const Arrow = styled.div`
   height: 16px;
   width: 16px;
 
-  background-color: #fff;
   position: absolute;
 
   /* Position at the top center */
@@ -103,12 +102,12 @@ const Arrow = styled.div`
 
   /* Border */
   transform: translate(-50%, -50%) rotate(45deg);
-  background-color: #fea112;
+  background: ${(props) => props.theme.colors.primary};
 `;
 
 const Stat = styled.div`
   padding: 1em 2em;
-  background: #bbceda;
+  background: ${(props) => props.theme.colors.grey};
   border-radius: 10px;
   text-align: center;
   font-weight: bold;
@@ -119,11 +118,11 @@ const Stat = styled.div`
 `;
 
 const StatName = styled.div`
-  color: #31485a;
+  color: ${(props) => props.theme.colors.secondary};
 `;
 
 const StatValue = styled.div`
   margin-top: 0.5em;
   font-size: 1.5em;
-  color: #31485a;
+  color: ${(props) => props.theme.colors.secondary};
 `;

@@ -74,7 +74,7 @@ const ModalWrapper = styled.div`
   z-index: 100;
   display: grid;
   place-items: center;
-  background: #162938;
+  background: ${(props) => props.theme.colors.secondary};
   height: 100vh;
   width: 100vw;
   padding: 1em;
@@ -82,7 +82,7 @@ const ModalWrapper = styled.div`
 `;
 
 const Form = styled.form`
-  background: white;
+  background: ${(props) => props.theme.colors.neutral};
   border-radius: 10px;
   padding: 1em;
   font-weight: bold;

@@ -35,6 +35,7 @@ export default function GameOverModal(props: IGameOverModalProps) {
             ? `Player ${winners[0].name} wins!`
             : "Tie!"}
         </Title>
+        {players.length === 1 && <Time>It took you {lastTime}</Time>}
         {sortedPlayers.map(({ name, points }, index) => (
           <PlayerResultWrapper
             key={name}
@@ -44,7 +45,6 @@ export default function GameOverModal(props: IGameOverModalProps) {
             <PlayerScore>{points} Pairs</PlayerScore>
           </PlayerResultWrapper>
         ))}
-        {players.length === 1 && <div>It took you {lastTime}</div>}
         <Actions>
           <Button
             onClick={() => {
@@ -80,9 +80,17 @@ const GameOverModalWrapper = styled.div`
 `;
 
 const Results = styled.div`
-  background: white;
+  background: ${(props) => props.theme.colors.neutral};
   padding: 2em;
   width: 100%;
+
+  @media (min-width: 768px) {
+    width: 60%;
+  }
+
+  @media (min-width: 1024px) {
+    width: 40%;
+  }
 
   & > * + * {
     margin-top: 1em;
@@ -93,8 +101,9 @@ const PlayerResultWrapper = styled.div<{ winner: boolean }>`
   display: flex;
   align-items: center;
   width: 100%;
-  background: ${(props) => (props.winner ? "#162938" : "#bbceda")};
-  color: ${(props) => (props.winner ? "white" : "initial")};
+  background: ${(props) =>
+    props.winner ? props.theme.colors.secondary : props.theme.colors.grey};
+  color: ${(props) => (props.winner ? props.theme.colors.neutral : "initial")};
   padding: 1em;
   border-radius: 10px;
 
@@ -113,6 +122,10 @@ const PlayerScore = styled.div`
 const Title = styled.div`
   text-align: center;
   font-size: 1.5em;
+`;
+
+const Time = styled.div`
+  text-align: center;
 `;
 
 const Actions = styled.div`
