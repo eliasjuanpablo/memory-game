@@ -18,12 +18,17 @@ export function useGameManager(
   }
 
   useEffect(() => {
-    if (selectedIndex) {
-      setTimeout(() => {
-        const newState = gm.checkMatch();
-        setGameState(newState);
-      }, checkDelay);
-    }
+    let timeout: NodeJS.Timeout;
+    timeout = setTimeout(() => {
+      const newState = gm.checkMatch();
+      setGameState(newState);
+    }, checkDelay);
+
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    };
   }, [selectedIndex, checkDelay, gm]);
 
   useEffect(() => {
