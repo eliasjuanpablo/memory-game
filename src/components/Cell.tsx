@@ -3,13 +3,19 @@ import { CellStatus, ICell, ITheme } from "../types";
 
 type CellProps = ICell & { onClick: Function; useIcons: boolean };
 
+const reqSvgs = require.context("!@svgr/webpack!../icons", true, /\.svg$/);
+const icons = reqSvgs.keys().map((path) => reqSvgs(path).default);
+
 export default function Cell(props: CellProps) {
   const { value, onClick, status, useIcons } = props;
+  const Icon = icons[value];
 
   const isVisible = [CellStatus.Revealed, CellStatus.Selected].includes(status);
 
   const content = useIcons ? (
-    <img style={{ width: "60%" }} src={`icons/icon-${value}.svg`} alt="icon" />
+    <IconWrapper>
+      <Icon />
+    </IconWrapper>
   ) : (
     value
   );
@@ -48,4 +54,16 @@ const Wrapper = styled.div<{ status: CellStatus }>`
   color: ${(props) => props.theme.colors.neutral};
   transition: background-color 0.5s ease;
   cursor: pointer;
+`;
+
+const IconWrapper = styled.div`
+  color: ${(props) => props.theme.colors.neutral};
+  padding: 0.3em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & > svg {
+    width: 100%;
+  }
 `;
