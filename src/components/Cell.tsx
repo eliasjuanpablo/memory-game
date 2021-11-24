@@ -1,10 +1,8 @@
 import styled from "styled-components";
+import icons from "../icons";
 import { CellStatus, ICell, ITheme } from "../types";
 
 type CellProps = ICell & { onClick: Function; useIcons: boolean };
-
-const reqSvgs = require.context("!@svgr/webpack!../icons", true, /\.svg$/);
-const icons = reqSvgs.keys().map((path) => reqSvgs(path).default);
 
 export default function Cell(props: CellProps) {
   const { value, onClick, status, useIcons } = props;
