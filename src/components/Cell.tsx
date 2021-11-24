@@ -12,7 +12,7 @@ export default function Cell(props: CellProps) {
 
   const content = useIcons ? (
     <IconWrapper>
-      <Icon />
+      <Icon role="img" />
     </IconWrapper>
   ) : (
     value
@@ -20,12 +20,13 @@ export default function Cell(props: CellProps) {
 
   return (
     <Wrapper
+      data-testid="cell"
       onClick={() => {
         onClick();
       }}
       status={status}
     >
-      {isVisible && content}
+      {isVisible && <Content data-testid="cell-content">{content}</Content>}
     </Wrapper>
   );
 }
@@ -53,6 +54,8 @@ const Wrapper = styled.div<{ status: CellStatus }>`
   transition: background-color 0.5s ease;
   cursor: pointer;
 `;
+
+const Content = styled.div``;
 
 const IconWrapper = styled.div`
   color: ${(props) => props.theme.colors.neutral};

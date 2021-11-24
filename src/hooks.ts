@@ -4,10 +4,10 @@ import { GameManager } from "./domain";
 import { IGameSettings } from "./types";
 
 export function useGameManager(
-  settings: Partial<IGameSettings>,
+  gameManager?: GameManager,
   checkDelay: number = 2000
 ) {
-  const [gm, setGm] = useState(new GameManager(settings));
+  const [gm, setGm] = useState(gameManager || new GameManager({}));
   const [gameState, setGameState] = useState(gm.state);
   const [selectedIndex, setSelectedIndex] = useState<number>();
 

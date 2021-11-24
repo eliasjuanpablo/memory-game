@@ -9,6 +9,7 @@ import Button from "./components/Button";
 import { useStopwatch } from "react-timer-hook";
 import GameOverModal from "./components/GameOverModal";
 import { theme } from "./constants";
+import { GameManager } from "./domain";
 
 function formatElapsed(seconds: number, minutes: number): string {
   return `${minutes.toString().padStart(2, "0")}:${seconds
@@ -16,10 +17,19 @@ function formatElapsed(seconds: number, minutes: number): string {
     .padStart(2, "0")}`;
 }
 
-function App() {
+export interface AppProps {
+  gm?: GameManager;
+  checkDelay?: number;
+  useIcons?: boolean;
+}
+
+function App(props: AppProps) {
   const [showSettings, setShowSettings] = useState(true);
-  const [useIcons, setUseIcons] = useState(false);
-  const { gameState, selectCell, changeSettings } = useGameManager({});
+  const [useIcons, setUseIcons] = useState(props.useIcons || false);
+  const { gameState, selectCell, changeSettings } = useGameManager(
+    props.gm,
+    props.checkDelay
+  );
   const {
     currentSettings: { size, players },
     cells,
@@ -90,7 +100,7 @@ function App() {
           </Menu>
         </Nav>
         <GridWrapper size={size}>
-          <Grid size={size}>
+          <Grid size={size} data-testid="grid">
             {cells.map(({ value, status }, index) => (
               <Cell
                 key={index}
