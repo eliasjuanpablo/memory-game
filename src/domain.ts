@@ -1,4 +1,5 @@
 import shuffle from "lodash/shuffle";
+
 import { DEFAULT_SETTINGS } from "./constants";
 import { CellStatus, ICell, IGameSettings, IGameState, IPlayer } from "./types";
 

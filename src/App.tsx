@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import styled, { ThemeProvider } from "styled-components";
+import { useStopwatch } from "react-timer-hook";
 
 import Cell from "./components/Cell";
 import StatsBar from "./components/StatsBar";
 import SettingsModal from "./components/SettingsModal";
-import { useGameManager } from "./hooks";
 import Button from "./components/Button";
-import { useStopwatch } from "react-timer-hook";
 import GameOverModal from "./components/GameOverModal";
 import { theme } from "./constants";
 import { GameManager } from "./domain";
+import { useGameManager } from "./hooks";
 
 function formatElapsed(seconds: number, minutes: number): string {
   return `${minutes.toString().padStart(2, "0")}:${seconds
