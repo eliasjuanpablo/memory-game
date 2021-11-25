@@ -1,46 +1,27 @@
-# Getting Started with Create React App
+# Memory Game
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was heavily inspired by [this frontendmentor's challenge](https://www.frontendmentor.io/challenges/memory-game-vse4WFPvM). Please note it's not pixel perfect because of premium access reasons.
 
-## Available Scripts
+## Live Demo
 
-In the project directory, you can run:
+You can test it live [here](https://frontendmentor-memory-game.netlify.app/)
 
-### `npm start`
+## Running it locally
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Install dependencies with `npm install`
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Start local development server with `npm start`
 
-### `npm test`
+## Design decisions
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Even though this is a fairly simple game, a few design decisions were made:
 
-### `npm run build`
+- The domain is handled by a class called `GameManager`, which encapsulates the game's rules and exposes a set of public methods for client code interaction purposes. The latter (i.e. the `App` component) is responsible for representing the current game state and handling user interaction. This aims to decouple presentation from domain rules, and I'm sure it can be improved (`App` seems a bit busy but I didn't want it to get too overengineered).
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- The `App` component doesn't interact directly with `GameManager` but through a custom hook called `useGameManager` which allows rerendering everytime the game's internal state is changed.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- The game rules could've lived inside the custom hook, but it's considerably easier to unit test a plain object state/methods. My goal was to finish the game's logic before even showing a decent grid on the screen.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- The `App` component receives optional props that can override the default `GameManager`, so that it's easier to test and hipothetically allow it to interact with different rules (e.g. another "GameManager" class that would implement the same interface but would have other rules). It's meant to be a simplistic dependency injection mechanism.
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- If you get considerably inspired, the `GameManager` class could live on a server, and the presentational code wouldn't notice the change as the communication would happen inside the custom hook. One or two tweaks should allow it to become a multiplayer online game.
