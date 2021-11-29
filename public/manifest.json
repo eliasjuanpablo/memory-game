@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Memory Game",
+  "name": "Frontendmentor's Memory Game Challenge",
   "icons": [
     {
       "src": "favicon.ico",
